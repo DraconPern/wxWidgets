@@ -10,7 +10,7 @@ install:
 
 build_script:  
   - cd %DEVSPACE%
-  - mkdir extra
+  - mkdir extra && cd extra
   - git clone --branch=master https://github.com/wxWidgets/wxWidgets.git
   - set WXWIN=%DEVSPACE%\extra\wxWidgets
   - cd %WXWIN%\build\msw
