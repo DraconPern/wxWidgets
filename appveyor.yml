@@ -21,7 +21,7 @@ build_script:
 
 after_build:
   - cd %DEVSPACE%\extra
-  - 7z a wxWidgets-win.7z wxWidgets -xr!*.tlog -xr!*.cpp -xr!*.cc -xr!*.obj -x!.git
+  - 7z a -xr!*.tlog -xr!*.cpp -xr!*.cc -xr!*.obj -x!.git wxWidgets-win.7z wxWidgets
   - mv wxWidgets-win.7z %APPVEYOR_BUILD_FOLDER%
 
 artifacts:
