@@ -21,7 +21,7 @@ script:
 
 before_deploy:
 - cd $DEVSPACE
-- zip -r -q latest.zip -x *.o -x *.gch -x *.tlog -x .git wxWidgets
+- zip -r -q latest.zip -x '*.o' -x '*.gch' -x '*.tlog' -x '.git' wxWidgets
 - mkdir -p dpl_cd_upload
 - mv latest.zip $DEVSPACE/dpl_cd_upload/wxWidgets-$TRAVIS_OS_NAME.zip
 deploy:
