@@ -1,0 +1,35 @@
+language: cpp
+
+compiler: gcc
+
+os:
+    - osx
+
+# use containers
+sudo: false
+
+env:
+    - TYPE=Release DEVSPACE=$TRAVIS_BUILD_DIR/..
+
+script:
+  - git clone --branch=master https://github.com/wxWidgets/wxWidgets.git wxWidgetssrc
+  - cd wxWidgetssrc
+  - git checkout v3.1.0
+  - mkdir -p build$TYPE && cd build$TYPE
+  - ../configure --disable-shared --with-libpng=no --with-libjpeg=no --with-libtiff=no --enable-svg=no --with-macosx-version-min=10.9
+  - make -j8
+
+before_deploy:
+- cd $DEVSPACE
+- zip -r -q latest.zip wxWidgets
+- mkdir -p dpl_cd_upload
+- mv latest.zip $DEVSPACE/dpl_cd_upload/wxWidgets-$TRAVIS_OS_NAME.zip
+deploy:
+  provider: s3
+  access_key_id: AKIAJLIJS2MGONMUBW4A
+  secret_access_key:
+    secure:  L1uH1qXyhSNL0vaArc4BuiROdra3OlJvPlKqCieslGEySQ6Vwf+W4El3qy2SvTJeczfF+zo4KRROqhAMstbcfgr2Fz265f6PsrgOn0DNSq68ojQTpwQXxjz3+/hATmi2wHummyYgN01GugwDjX3IYNHyYM4czU9ejXN8i3mi56ckTIksL9mHIX4cDjV/DVegFDVhQUwoYv3kIPCXIHafLzNcHJJWGB04awOoUxMHoZVKNma5SCiziwSaBf7nKf5sTzmSVCtvl1XGLG/CbawYRg4iLTs4Bf6rM39rhKYe/UmT6nGj6kfTvcFQ36fRTbQGskvtaWfjBSOLNV9d2dUP/1MC6QPuGTNBvkTpo+hDYgCkMhN27KID86c81lWslfXshTKv4IciTVOh+MTUuCtlvJ3RlFNXMsyMw5Tx789VQCryW/A/X66VdAOEv3eCcRKytswuEgTVnI/7rjHYHpp80LY4ZXCF3+F+7tu/dvHGvOwVwcexS9U/+FvqRuMXRPqlAgv1AUI6+YBXVem2zJA8Dp4YVrScud1tPJsbM7Cywt2QN220jVy/v+BjdcLOEWlviW/eqXCK86cc8oshsdCuxVJGX6pMa6S4+ioXyXM3bH9dTXVbs4R2Dk52mvYqMPixUVlHvZNNxj3GwniztZMKFf8BIiM94QGolYiD6O2b1jU=
+  bucket: draconpern-buildcache
+  acl: public_read
+  skip_cleanup: true
+  local_dir: dpl_cd_upload
