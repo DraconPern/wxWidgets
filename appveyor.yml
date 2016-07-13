@@ -1,5 +1,4 @@
-platform:
-  - x86
+image: Visual Studio 2013
 
 configuration:
   - Release
@@ -21,7 +20,7 @@ build_script:
 
 after_build:
   - cd %DEVSPACE%\extra
-  - 7z a -xr!*.tlog -xr!*.cpp -xr!*.cc -xr!*.obj -x!.git wxWidgets-win.7z wxWidgets
+  - 7z a -xr!*.tlog -xr!*.cpp -xr!*.cc -xr!*.obj -x!*.git* wxWidgets-win.7z wxWidgets
   - mv wxWidgets-win.7z %APPVEYOR_BUILD_FOLDER%
 
 artifacts:
