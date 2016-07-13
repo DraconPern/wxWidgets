@@ -12,15 +12,17 @@ env:
     - TYPE=Release DEVSPACE=$TRAVIS_BUILD_DIR/..
 
 script:
-  - git clone --branch=master https://github.com/wxWidgets/wxWidgets.git wxWidgetssrc
-  - cd wxWidgetssrc
+  - cd $DEVSPACE
+  - mkdir extra && cd extra
+  - git clone --branch=master https://github.com/wxWidgets/wxWidgets.git
+  - cd wxWidgets
   - git checkout v3.1.0
   - mkdir -p build$TYPE && cd build$TYPE
   - ../configure --disable-shared --with-libpng=no --with-libjpeg=no --with-libtiff=no --enable-svg=no --with-macosx-version-min=10.9
   - make -j8
 
 before_deploy:
-- cd $DEVSPACE
+- cd $DEVSPACE/extra
 - zip -r -x '*.o' -x '*.gch' -x '*.tlog' -x '*.git*' -q latest.zip wxWidgets
 - mkdir -p dpl_cd_upload
 - mv latest.zip $DEVSPACE/dpl_cd_upload/wxWidgets-$TRAVIS_OS_NAME.zip
